@@ -5,41 +5,35 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+let items = [];
+
 app.set('view engine', 'ejs');
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('public'));
+// to load the static files residing in the public dir
+
 app.get('/', function (req, res) {
-  var today = new Date();
-  var currentDay = today.getDay();
-  var day = '';
+  let today = new Date();
+  let options = {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  };
 
-  switch (currentDay) {
-    case 0:
-      day = 'Sunday';
-      break;
-    case 1:
-      day = 'Monday';
-      break;
-    case 2:
-      day = 'Tueday';
-      break;
-    case 3:
-      day = 'Wednesday';
-      break;
-    case 4:
-      day = 'Thursday';
-      break;
-    case 5:
-      day = 'Friday';
-      break;
-    case 6:
-      day = 'Saturday';
-      break;
-    default:
-      console.log('Error: current day is equal to: ' + currentDay);
-      break;
-  }
+  // tolocale has been to sync with operating systems's timezone
+  let day = today.toLocaleDateString('en-US', options);
 
-  res.render('list', { kindOfDay: day });
+  res.render('list', { kindOfDay: day, newListItem: items });
+});
+
+app.post('/', function (req, res) {
+  let item = req.body.newItem;
+
+  items.push(item);
+
+  res.redirect('/');
+  // redirect with send to app.get to check the availability of any value for item
 });
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'));

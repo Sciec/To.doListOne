@@ -5,8 +5,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>To Do List</title>
+
+    <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
-    <h1>It's a <%= kindOfDay %>!</h1>
+    <div class="box" id="heading">
+      <h1><%= kindOfDay %></h1>
+    </div>
+
+    <div class="box">
+      <% for(const x of newListItem) { %>
+      <div class="item">
+        <input type="checkbox" />
+        <p><%= x %></p>
+
+        <!-- in the previous line, '< % =' aint used because we aint tryin to get/write the value to of it, but we indeed wana get the value of x so we used '< % =' -->
+      </div>
+      <% } %>
+
+      <form class="item" action="/" method="post">
+        <input
+          type="text"
+          name="newItem"
+          placeholder="New Item"
+          autocomplete="off"
+        />
+        <button type="submit" name="button"><strong class="plus">+</strong></button>
+      </form>
+    </div>
   </body>
 </html>
